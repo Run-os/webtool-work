@@ -1,0 +1,72 @@
+name: 自动部署
+
+on:
+  push:
+    branches:
+      - main  # 推送到 main 分支触发
+  release:
+    types:
+      - published  # 发布新版本时触发
+  workflow_dispatch:  # 手动触发
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4  # 稳定版 v4
+        with:
+          ref: main
+          fetch-depth: 0  # 拉取完整提交记录
+
+      - name: 部署到 GitHub page 分支
+        run: |
+          # 直接使用项目根目录（适配你的项目结构，移除 public 目录依赖）
+          # 初始化 git 仓库并配置
+          git init
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          
+          # 忽略不需要部署的文件（可选，根据需要调整）
+          echo "README.md" > .gitignore  # 不部署 README.md（如需部署可删除此行）
+          
+          # 添加所有文件并提交
+          git add .
+          # 处理空提交（避免无文件变更时流程失败）
+          if git diff --staged --quiet; then
+            echo "ℹ️ 无文件变更，跳过提交"
+          else
+            # 区分触发场景生成提交信息
+            if [ "${{ github.event_name }}" = "release" ]; then
+              COMMIT_MSG="Release ${{ github.event.release.tag_name }} ==> [$(date +"%Y-%m-%d %H:%M:%S")]"
+            else
+              COMMIT_MSG="${{ github.event.head_commit.message }} ==> [$(date +"%Y-%m-%d %H:%M:%S")]"
+            fi
+            git commit -m "$COMMIT_MSG"
+          fi
+          
+          # 强制推送到 GitHub 的 page 分支
+          git push --force --quiet "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:page
+          echo "✅ 成功推送到 GitHub page 分支"
+
+      - name: 服务器拉取最新代码
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}       # 服务器 IP
+          username: ${{ secrets.USERNAME }}   # 服务器登录用户名
+          key: ${{ secrets.KEY }}             # SSH 私钥（无则用 password 参数）
+          passphrase: ${{ secrets.PASSPHRASE }} # 私钥密码（无则留空）
+          port: ${{ secrets.PORT }}           # SSH 端口（默认 22）
+          script: |
+            # 进入服务器代码目录（确认路径正确）
+            cd /opt/1panel/www/sites/tool.122050.xyz/index
+            # 配置安全目录，避免 git 权限警告
+            git config --global --add safe.directory "$(pwd)"
+            # 拉取 page 分支最新内容（适配你的部署分支）
+            git fetch origin page
+            git reset --hard origin/page
+            git clean -fd  # 清理未跟踪文件，确保代码纯净
+            echo "✅ 服务器已拉取 page 分支最新内容"
