@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日必看 - 工具箱</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6b7280',
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- 公共样式 -->
+    <link rel="stylesheet" href="../assets/css/common.css" />
+    <!-- Flowbite -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" />
+</head>
+
+<body class="min-h-screen p-4 bg-gray-900">
+    <!-- 背景遮罩 -->
+    <div class="fixed inset-0 -z-10 bg-black/40"></div>
+
+    <!-- 主容器 -->
+    <div class="w-full max-w-md mx-auto mt-8 mb-8">
+        <!-- 卡片容器 -->
+        <div class="card">
+            <!-- 标题栏（带返回按钮） -->
+            <div class="flex items-center justify-between py-4 px-5 bg-gray-800/90 rounded-t-lg shadow-sm">
+                <a href="../index.html"
+                    class="flex items-center gap-2 text-white hover:text-blue-400 transition-colors">
+                    <i class="fa-solid fa-arrow-left w-4 h-4"></i>
+                    <span>返回</span>
+                </a>
+                <div class="text-lg font-semibold text-white">每日必看</div>
+                <div class="w-8"></div>
+            </div>
+
+            <!-- 内容区域 -->
+            <div class="p-5 space-y-5">
+
+                <!-- 人员列表 -->
+                <div id="personList" class="space-y-4"></div>
+
+                <!-- 提交按钮 -->
+                <button onclick="generateText()" class="btn-primary inline-flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy w-5 h-5"></i>
+                    <span>生成并复制</span>
+                </button>
+            </div>
+
+            <!-- 底部 -->
+            <div class="px-5 py-4 border-t border-gray-700 text-xs text-gray-400">
+                <p>快速生成每日提醒 · 一键复制</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="../assets/js/common.js"></script>
+    <script>
+        const PERSON_GROUPS = [
+            { groupName: '新办户', members: ['分局', '税源'] },
+            { groupName: '网格化', members: ['乐有为', '王文静', '李彬督', '肖磊'] }
+        ];
+
+        function renderPersonList() {
+            const container = document.getElementById('personList');
+            let html = '';
+
+            PERSON_GROUPS.forEach(group => {
+                html += `
+                    <div class="bg-gray-700/50 rounded-lg p-4">
+                        <h3 class="mb-3 text-sm font-semibold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-users w-4 h-4 text-blue-400"></i>
+                            ${group.groupName}
+                        </h3>
+                        <div class="space-y-3">
+                            ${group.members.map(name => `
+                                <div class="flex items-center justify-between">
+                                    <label class="text-sm text-gray-300">${name}</label>
+                                    <input type="number"
+                                           data-name="${name}"
+                                           data-group="${group.groupName}"
+                                           placeholder="数量"
+                                           min="0"
+                                           class="w-24 py-1.5 px-3 text-sm rounded-lg border border-gray-600 bg-gray-800 text-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function generateText() {
+            const inputs = document.querySelectorAll('input[data-name]');
+            const groupData = {};
+
+            // 按组收集数据
+            inputs.forEach(input => {
+                const value = input.value.trim();
+                if (value && parseInt(value) > 0) {
+                    const group = input.dataset.group;
+                    const name = input.dataset.name;
+                    if (!groupData[group]) {
+                        groupData[group] = [];
+                    }
+                    groupData[group].push({ name, count: parseInt(value) });
+                }
+            });
+
+            if (Object.keys(groupData).length === 0) {
+                showToast('请至少填写一个数量！');
+                return;
+            }
+
+            let resultLines = [];
+
+            // 新办户组：特殊格式
+            if (groupData['新办户'] && groupData['新办户'].length > 0) {
+                resultLines.push('【新办户】');
+                const xbhItems = groupData['新办户'].map(e => `${e.name}有 ${e.count} 户`).join('、');
+                resultLines.push(xbhItems);
+            }
+
+            // 网格化组：带编号列表
+            if (groupData['网格化'] && groupData['网格化'].length > 0) {
+                resultLines.push('【网格化】');
+                groupData['网格化'].forEach((e, i) => {
+                    resultLines.push(`${i + 1}. ${e.name}账号下有${e.count}条任务`);
+                });
+            }
+
+            resultLines.push('请分局、税源做好税费种，并尽快处理网格化任务 [社会社会]');
+
+            const resultText = resultLines.join('\n');
+
+            copyToClipboard(resultText,
+                () => showToast('已复制到剪贴板！'),
+                () => showToast('复制失败')
+            );
+        }
+
+        // 初始化
+        renderPersonList();
+    </script>
+</body>
+
+</html>

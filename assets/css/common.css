@@ -1,0 +1,329 @@
+/* 公共样式 - 基于 Tailwind CSS */
+
+/* 全局重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 页面背景适配 */
+body {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 卡片容器 */
+.card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+html.dark .card {
+    background-color: rgba(31, 41, 55, 0.95);
+    border-color: rgba(55, 65, 81, 0.8);
+}
+
+/* 移动端优先的媒体查询补充 */
+@media (min-width: 768px) {
+    .card {
+        max-width: 28rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* 标题样式 */
+.page-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+html.dark .page-title {
+    color: white;
+}
+
+/* 自定义按钮样式（覆盖Tailwind基础样式） */
+.btn-primary {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #6b7280;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #4b5563;
+}
+
+html.dark .btn-primary {
+    background-color: #4b5563;
+}
+
+html.dark .btn-primary:hover {
+    background-color: #374151;
+}
+
+.btn-success {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #10b981;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #059669;
+}
+
+html.dark .btn-success {
+    background-color: #059669;
+}
+
+html.dark .btn-success:hover {
+    background-color: #047857;
+}
+
+.btn-secondary {
+    padding: 0.5rem 0.75rem;
+    background-color: transparent;
+    color: #374151;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+html.dark .btn-secondary {
+    color: #d1d5db;
+    border-color: #4b5563;
+}
+
+html.dark .btn-secondary:hover {
+    background-color: #374151;
+    border-color: #6b7280;
+}
+
+/* 主题切换按钮 */
+.theme-toggle {
+    padding: 0.5rem;
+    border-radius: 9999px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+html.dark .theme-toggle {
+    color: #9ca3af;
+}
+
+html.dark .theme-toggle:hover {
+    background-color: #374151;
+    color: white;
+}
+
+/* Toast 提示样式 */
+.toast {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 9999;
+}
+
+html.dark .toast {
+    background-color: #1f2937;
+    color: #d1d5db;
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background-color: #10b981;
+    color: white;
+}
+
+/* 表单样式 */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #374151;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #6b7280;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2);
+}
+
+html.dark input[type="text"],
+html.dark input[type="email"],
+html.dark input[type="password"],
+html.dark input[type="file"],
+html.dark textarea,
+html.dark select {
+    border-color: #4b5563;
+    background-color: #374151;
+    color: #d1d5db;
+}
+
+html.dark input[type="text"]:focus,
+html.dark input[type="email"]:focus,
+html.dark input[type="password"]:focus,
+html.dark input[type="file"]:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+    border-color: #9ca3af;
+    box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.2);
+}
+
+/* 标签样式 */
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+html.dark label {
+    color: #d1d5db;
+}
+
+/* 分割线样式 */
+hr {
+    border-color: #e5e7eb;
+}
+
+html.dark hr {
+    border-color: #374151;
+}
+
+/* 链接样式 */
+a {
+    color: #6b7280;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #4b5563;
+    text-decoration: underline;
+}
+
+html.dark a {
+    color: #9ca3af;
+}
+
+html.dark a:hover {
+    color: #d1d5db;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+html.dark ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* 文本截断 */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 过渡动画 */
+.transition-colors {
+    transition-property: color, background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
