@@ -31,9 +31,6 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           
-          # 忽略不需要部署的文件（可选，根据需要调整）
-          echo "README.md" > .gitignore  # 不部署 README.md（如需部署可删除此行）
-          
           # 添加所有文件并提交
           git add .
           # 处理空提交（避免无文件变更时流程失败）
