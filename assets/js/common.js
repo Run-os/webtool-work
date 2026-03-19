@@ -90,6 +90,20 @@ function copyToClipboard(text, onSuccess, onFail) {
     }
 }
 
+// 实时更新分组合计
+function updateGroupTotals() {
+    const totalElements = document.querySelectorAll('.group-total');
+    totalElements.forEach(el => {
+        const groupIndex = el.dataset.groupIndex;
+        const inputs = document.querySelectorAll(`input[data-group-index="${groupIndex}"]`);
+        let total = 0;
+        inputs.forEach(input => {
+            total += parseInt(input.value) || 0;
+        });
+        el.textContent = total;
+    });
+}
+
 // 页面加载完成后初始化深色模式
 document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();

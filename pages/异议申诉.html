@@ -78,12 +78,13 @@
             const container = document.getElementById('personList');
             let html = '';
 
-            PERSON_GROUPS.forEach(group => {
+            PERSON_GROUPS.forEach((group, groupIndex) => {
                 html += `
                     <div class="bg-gray-700/50 rounded-lg p-4">
                         <h3 class="mb-3 text-sm font-semibold text-white flex items-center gap-2">
                             <i class="fa-solid fa-users w-4 h-4 text-blue-400"></i>
                             ${group.groupName}
+                            <span class="group-total ml-auto" data-group-index="${groupIndex}">0</span>
                         </h3>
                         <div class="space-y-3">
                             ${group.members.map(name => `
@@ -92,6 +93,7 @@
                                     <input type="number"
                                            data-name="${name}"
                                            data-group="${group.groupName}"
+                                           data-group-index="${groupIndex}"
                                            placeholder="数量"
                                            min="0"
                                            class="w-24 py-1.5 px-3 text-sm rounded-lg border border-gray-600 bg-gray-800 text-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all">
@@ -103,6 +105,11 @@
             });
 
             container.innerHTML = html;
+
+            // 为所有输入框添加实时更新事件
+            document.querySelectorAll('input[data-group-index]').forEach(input => {
+                input.addEventListener('input', updateGroupTotals);
+            });
         }
 
         function generateText() {
