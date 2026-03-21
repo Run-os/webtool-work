@@ -7,120 +7,93 @@
     <title>工具箱 - 高效实用的工具集合</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind配置 -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6b7280', // 主色调统一（灰色）
-                        secondary: '#4b5563',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'], // 现代无衬线字体
-                    },
-                }
-            }
-        }
-    </script>
     <!-- 公共样式 -->
     <link rel="stylesheet" href="assets/css/common.css" />
-    <!-- Flowbite（增强组件） -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 
-<body class="min-h-screen p-4 bg-gray-900">
-    <!-- 自适应背景图（移动端/桌面端） -->
-    <div class="fixed inset-0 -z-10">
-        <img src="assets/images/bg-mobile.jpg" alt="移动端背景" class="w-full h-full object-cover md:hidden"
-            onerror="this.style.display='none'">
-        <img src="assets/images/bg-desktop.jpg" alt="桌面端背景" class="w-full h-full object-cover hidden md:block"
-            onerror="this.style.display='none'">
-        <!-- 背景遮罩（提升文字可读性） -->
-        <div class="absolute inset-0 bg-black/50"></div>
-    </div>
+<body class="min-h-screen p-4 md:p-8">
+    <!-- SVG滤镜定义 - 液态玻璃效果 -->
+    <svg style="position: absolute; width: 0; height: 0; pointer-events: none;">
+        <defs>
+            <filter id="liquid-glass-filter" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                    result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
 
-    <!-- 主容器（移动端优先） -->
-    <div class="w-full max-w-md mx-auto mt-8 mb-8">
+    <!-- 主容器 -->
+    <div class="w-full max-w-lg mx-auto mt-4 md:mt-12 mb-8">
         <!-- Logo区域 -->
-        <div class="flex items-center justify-center mb-6">
-            <img src="assets/images/logo.png" alt="工具箱Logo" class="w-12 h-12 rounded-full"
-                onerror="this.style.display='none'">
-            <h1 class="ml-3 text-2xl font-bold text-white drop-shadow-md">个人工具箱</h1>
+        <div class="logo-container">
+            <img src="assets/images/logo.png" alt="工具箱Logo" onerror="this.style.display='none'">
+            <h1>个人工具箱</h1>
         </div>
 
         <!-- 卡片容器 -->
         <div class="card">
-            <!-- 标题栏（复用公共函数） -->
-            <div id="header"></div>
+            <!-- 标题栏 -->
+            <div class="card-header">
+                <div class="card-header-title">
+                    <i class="fa-solid fa-cog"></i>
+                    <span>工具箱</span>
+                </div>
+            </div>
 
             <!-- 工具按钮列表 -->
-            <div class="p-5 space-y-4">
+            <div class="card-content space-y-3">
 
-                <!-- 新增分割线+说明（增强真实感） -->
-                <div class="flex items-center gap-2 text-gray-400 text-sm mt-2">
-                    <hr class="flex-1 border-gray-700">
+                <!-- 分割线：小办公室 -->
+                <div class="divider">
                     <span>小办公室</span>
-                    <hr class="flex-1 border-gray-700">
                 </div>
 
                 <!-- 异议申诉按钮 -->
                 <a href="pages/异议申诉.html" class="block">
-                    <button type="button" class="btn-primary inline-flex items-center justify-center gap-2">
-                        <span id="icon-objection"></span>
+                    <button type="button" class="btn-primary">
+                        <i class="fa-solid fa-chart-bar"></i>
                         <span>异议申诉</span>
                     </button>
                 </a>
 
                 <!-- 每日必看按钮 -->
                 <a href="pages/每日必看.html" class="block">
-                    <button type="button" class="btn-primary inline-flex items-center justify-center gap-2">
-                        <span id="icon-daily"></span>
+                    <button type="button" class="btn-primary">
+                        <i class="fa-solid fa-file-text"></i>
                         <span>每日必看</span>
                     </button>
                 </a>
 
-                <!-- 新增分割线+说明（增强真实感） -->
-                <div class="flex items-center gap-2 text-gray-400 text-sm mt-2">
-                    <hr class="flex-1 border-gray-700">
+                <!-- 分割线：第三方工具 -->
+                <div class="divider">
                     <span>第三方工具</span>
-                    <hr class="flex-1 border-gray-700">
                 </div>
-
 
                 <!-- Jidrop按钮 -->
                 <a href="https://jidrop.com/" target="_blank" class="block">
-                    <button type="button" class="btn-primary inline-flex items-center justify-center gap-2">
-                        <img src="https://jidrop.com/images/favicon-96x96.png" alt="Jidrop图标" class="w-5 h-5"
-                            onerror="this.style.display='none'; document.getElementById('icon-jidrop').style.display='inline-block'">
-                
+                    <button type="button" class="btn-primary btn-external">
+                        <img src="https://jidrop.com/images/favicon-96x96.png" alt="Jidrop" class="w-5 h-5 rounded"
+                            onerror="this.style.display='none'">
                         <span>Jidrop</span>
+                        <i class="fa-solid fa-external-link text-xs opacity-60"></i>
                     </button>
                 </a>
+
             </div>
 
-            <!-- 底部信息（增强真实感） -->
-            <div class="px-5 py-4 border-t border-gray-700 text-xs text-gray-400">
-                <p>© 2026 个人工具箱 | 所有工具仅供参考使用</p>
+            <!-- 底部信息 -->
+            <div class="card-footer">
+                <p>© 2026 个人工具箱</p>
             </div>
         </div>
     </div>
 
     <!-- 脚本加载 -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="assets/js/common.js"></script>
-    <script>
-        // 渲染标题栏
-        document.getElementById('header').innerHTML = renderHeader(`
-            <span class="inline-flex items-center gap-2">
-                <i class="fa-solid fa-cog w-5 h-5"></i> 工具箱
-            </span>
-        `);
-        // 渲染按钮图标
-        document.getElementById('icon-objection').innerHTML = '<i class="fa-solid fa-chart-bar w-5 h-5"></i>';
-        document.getElementById('icon-daily').innerHTML = '<i class="fa-solid fa-file-text w-5 h-5"></i>';
-    </script>
 </body>
 
 </html>

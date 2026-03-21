@@ -7,66 +7,51 @@
     <title>每日必看 - 工具箱</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind配置 -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6b7280',
-                    },
-                }
-            }
-        }
-    </script>
     <!-- 公共样式 -->
     <link rel="stylesheet" href="../assets/css/common.css" />
-    <!-- Flowbite -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 
-<body class="min-h-screen p-4 bg-gray-900">
-    <!-- 背景遮罩 -->
-    <div class="fixed inset-0 -z-10 bg-black/40"></div>
-
+<body class="min-h-screen p-4 md:p-8">
     <!-- 主容器 -->
-    <div class="w-full max-w-md mx-auto mt-8 mb-8">
+    <div class="w-full max-w-lg mx-auto mt-4 md:mt-12 mb-8">
         <!-- 卡片容器 -->
         <div class="card">
             <!-- 标题栏（带返回按钮） -->
-            <div class="flex items-center justify-between py-4 px-5 bg-gray-800/90 rounded-t-lg shadow-sm">
-                <a href="../index.html"
-                    class="flex items-center gap-2 text-white hover:text-blue-400 transition-colors">
-                    <i class="fa-solid fa-arrow-left w-4 h-4"></i>
+            <div class="card-header">
+                <a href="../index.html" class="back-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
                     <span>返回</span>
                 </a>
-                <div class="text-lg font-semibold text-white">每日必看</div>
-                <div class="w-8"></div>
+                <div class="card-header-title">
+                    <i class="fa-solid fa-file-text"></i>
+                    <span>每日必看</span>
+                </div>
+                <div class="w-16"></div>
             </div>
 
             <!-- 内容区域 -->
-            <div class="p-5 space-y-5">
+            <div class="card-content space-y-4">
 
                 <!-- 人员列表 -->
-                <div id="personList" class="space-y-4"></div>
+                <div id="personList" class="space-y-3"></div>
 
                 <!-- 提交按钮 -->
-                <button onclick="generateText()" class="btn-primary inline-flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-copy w-5 h-5"></i>
+                <button onclick="generateText()" class="btn-success">
+                    <i class="fa-solid fa-copy"></i>
                     <span>生成并复制</span>
                 </button>
             </div>
 
             <!-- 底部 -->
-            <div class="px-5 py-4 border-t border-gray-700 text-xs text-gray-400">
+            <div class="card-footer">
                 <p>快速生成每日提醒 · 一键复制</p>
             </div>
         </div>
     </div>
 
     <!-- 脚本 -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="../assets/js/common.js"></script>
     <script>
         const PERSON_GROUPS = [
@@ -80,23 +65,22 @@
 
             PERSON_GROUPS.forEach((group, groupIndex) => {
                 html += `
-                    <div class="bg-gray-700/50 rounded-lg p-4">
-                        <h3 class="mb-3 text-sm font-semibold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-users w-4 h-4 text-blue-400"></i>
+                    <div class="group-container">
+                        <h3 class="group-header">
+                            <i class="fa-solid fa-users"></i>
                             ${group.groupName}
-                            <span class="group-total ml-auto" data-group-index="${groupIndex}">0</span>
+                            <span class="group-total" data-group-index="${groupIndex}">0</span>
                         </h3>
-                        <div class="space-y-3">
+                        <div class="space-y-2">
                             ${group.members.map(name => `
-                                <div class="flex items-center justify-between">
-                                    <label class="text-sm text-gray-300">${name}</label>
+                                <div class="input-row">
+                                    <label>${name}</label>
                                     <input type="number"
                                            data-name="${name}"
                                            data-group="${group.groupName}"
                                            data-group-index="${groupIndex}"
                                            placeholder="数量"
-                                           min="0"
-                                           class="w-24 py-1.5 px-3 text-sm rounded-lg border border-gray-600 bg-gray-800 text-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all">
+                                           min="0">
                                 </div>
                             `).join('')}
                         </div>
