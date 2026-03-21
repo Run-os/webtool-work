@@ -18,7 +18,7 @@ const ASSETS_PREFIX = (function () {
     const favicon = document.createElement('link');
     favicon.rel = 'icon';
     favicon.type = 'image/png';
-    favicon.href = `${ASSETS_PREFIX}assets/images/icon.png`;
+    favicon.href = `${ASSETS_PREFIX}assets/images/logo.png`;
     document.head.appendChild(favicon);
 
     // 添加 Tailwind CSS
