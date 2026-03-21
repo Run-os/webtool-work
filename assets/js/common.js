@@ -2,12 +2,41 @@
  * 公共组件和工具函数
  */
 
-// 加载FontAwesome图标（通过CDN）
-(function loadFontAwesome() {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css';
-    document.head.appendChild(link);
+// 自动检测资源路径前缀（根据当前页面位置）
+const ASSETS_PREFIX = (function () {
+    const path = window.location.pathname;
+    // 如果路径包含 /pages/，说明在子目录中
+    if (path.includes('/pages/')) {
+        return '../';
+    }
+    return '';
+})();
+
+// 初始化公共 HEAD 资源
+(function initCommonHead() {
+    // 添加 favicon
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = `${ASSETS_PREFIX}assets/images/icon.png`;
+    document.head.appendChild(favicon);
+
+    // 添加 Tailwind CSS
+    const tailwind = document.createElement('script');
+    tailwind.src = 'https://cdn.tailwindcss.com';
+    document.head.appendChild(tailwind);
+
+    // 添加公共样式
+    const commonCss = document.createElement('link');
+    commonCss.rel = 'stylesheet';
+    commonCss.href = `${ASSETS_PREFIX}assets/css/common.css`;
+    document.head.appendChild(commonCss);
+
+    // 加载 FontAwesome 图标
+    const fontAwesome = document.createElement('link');
+    fontAwesome.rel = 'stylesheet';
+    fontAwesome.href = 'https://fontawesome.ywxmz.com/7.0.1/css/all.min.css';
+    document.head.appendChild(fontAwesome);
 })();
 
 // 获取图标函数（统一管理图标样式）
